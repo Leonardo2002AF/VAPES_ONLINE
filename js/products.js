@@ -6,7 +6,7 @@
 // ─── CONFIGURACIÓN GENERAL ───────────────────────────────────
 const STORE_CONFIG = {
   name: "VapeZone",
-  whatsappNumber: "593XXXXXXXXX", // ← CAMBIA ESTO: código de país + número (sin +, sin espacios)
+  whatsappNumber: "593958851179", // ← CAMBIA ESTO: código de país + número (sin +, sin espacios)
   currency: "$",
   currencyCode: "USD",
   greeting: "¡Hola! Quiero hacer un pedido en VapeZone 🛒💨",
