@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VapeZone — Panel Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #00f5a0;
+      --primary-glow: rgba(0, 245, 160, 0.3);
+      --accent: #ff006e;
+      --dark: #040a0f;
+      --dark2: #0a1520;
+      --dark3: #0f1f30;
+      --card-bg: rgba(15, 31, 48, 0.9);
+      --text: #e8f4f8;
+      --text-muted: #7a9ab5;
+      --border: rgba(0, 245, 160, 0.15);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Outfit', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+    }
+
+    /* LOGIN */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3rem;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-logo {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-logo span { color: var(--primary); }
+
+    .login-sub {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group { margin-bottom: 1.2rem; text-align: left; }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    input[type="password"], input[type="text"], input[type="number"], textarea, select {
+      width: 100%;
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus { border-color: var(--primary); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      font-family: var(--font-body);
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--dark);
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+    .btn-primary:hover { background: #10ffb0; transform: translateY(-2px); }
+
+    .btn-danger { background: var(--accent); color: white; }
+    .btn-danger:hover { opacity: 0.85; }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+
+    .login-error {
+      color: var(--accent);
+      font-size: 0.82rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    /* ADMIN PANEL */
+    .admin-panel { display: none; }
+
+    .admin-nav {
+      background: var(--dark2);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+    }
+
+    .admin-logo span { color: var(--primary); }
+
+    .admin-nav-actions { display: flex; gap: 0.75rem; align-items: center; }
+
+    .admin-content { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+
+    .admin-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+
+    .admin-sub { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+
+    /* STATS */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem;
+      text-align: center;
+    }
+
+    .stat-card-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .stat-card-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* PRODUCT MANAGER */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    /* TABLE */
+    .products-table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th {
+      background: var(--dark3);
+      padding: 0.9rem 1rem;
+      text-align: left;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 0.85rem 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+
+    tr:hover td { background: rgba(0, 245, 160, 0.03); }
+
+    .badge-active {
+      background: rgba(0, 245, 160, 0.15);
+      color: var(--primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .badge-inactive {
+      background: rgba(255, 0, 110, 0.15);
+      color: var(--accent);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .badge-nostock {
+      background: rgba(122, 154, 181, 0.15);
+      color: var(--text-muted);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .table-actions { display: flex; gap: 0.5rem; }
+
+    .icon-btn {
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+
+    .icon-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .icon-btn.danger:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* MODAL EDICION */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-backdrop.active { display: flex; }
+
+    .edit-modal {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .edit-modal-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    textarea { min-height: 80px; resize: vertical; }
+
+    .info-box {
+      background: rgba(0, 245, 160, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .info-box strong { color: var(--primary); }
+
+    /* CONFIG */
+    .config-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .config-title {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .admin-content { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-logo">VAPE<span>ZONE</span></div>
+      <p class="login-sub">Panel de Administración</p>
+      <div class="form-group">
+        <label>Contraseña de acceso</label>
+        <input type="password" id="loginPassword" placeholder="Ingresa tu contraseña" onkeydown="if(event.key==='Enter') login()" />
+        <p class="login-error" id="loginError">Contraseña incorrecta</p>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="login()">Ingresar al Panel</button>
+      <p style="color:var(--text-muted);font-size:0.75rem;margin-top:1rem">
+        Contraseña por defecto: <strong style="color:var(--primary)">admin123</strong><br/>
+        Cámbiala en <code>admin/index.html</code>
+      </p>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-panel" id="adminPanel">
+
+    <!-- NAV -->
+    <nav class="admin-nav">
+      <div class="admin-logo">VAPE<span>ZONE</span> <small style="font-size:0.7rem;color:var(--text-muted);font-family:var(--font-body);letter-spacing:0">Admin</small></div>
+      <div class="admin-nav-actions">
+        <a href="../index.html" class="btn btn-ghost" target="_blank">🌐 Ver Tienda</a>
+        <button class="btn btn-danger" onclick="logout()">Salir</button>
+      </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <div class="admin-content">
+
+      <div class="admin-title">PANEL DE CONTROL</div>
+      <p class="admin-sub">Gestiona tu catálogo de productos fácilmente</p>
+
+      <!-- STATS -->
+      <div class="admin-stats" id="adminStats"></div>
+
+      <!-- INFO BOX -->
+      <div class="info-box">
+        <strong>💡 ¿Cómo funciona?</strong><br/>
+        Los cambios que hagas aquí se guardan en tu navegador.<br/>
+        Para que los clientes vean los cambios, edita directamente el archivo <strong>js/products.js</strong> y sube los cambios a GitHub Pages.
+        <br/><br/>
+        El número de WhatsApp se configura en <strong>js/products.js</strong> → campo <strong>whatsappNumber</strong>.
+      </div>
+
+      <!-- PRODUCTS TABLE -->
+      <div class="section-header">
+        <div class="section-title">PRODUCTOS</div>
+        <button class="btn btn-primary" onclick="openAddModal()">+ Nuevo Producto</button>
+      </div>
+
+      <div class="products-table-wrap">
+        <table id="productsTable">
+          <thead>
+            <tr>
+              <th>Emoji</th>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- INSTRUCCIONES -->
+      <div style="margin-top:2rem">
+        <div class="section-title" style="font-size:1.2rem;margin-bottom:1rem">📋 CÓMO AGREGAR IMÁGENES</div>
+        <div class="config-card">
+          <p style="color:var(--text-muted);font-size:0.88rem;line-height:1.8">
+            1. Guarda tus imágenes en la carpeta <code>images/</code> (ej: <code>images/mango.jpg</code>)<br/>
+            2. En <code>js/products.js</code>, en el campo <code>image</code> del producto, escribe la ruta: <code>"images/mango.jpg"</code><br/>
+            3. Sube los archivos a GitHub Pages con git push<br/>
+            4. Tamaño recomendado: <strong>600×400px</strong> o similar, formato JPG/PNG/WEBP
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL EDICIÓN/CREACIÓN -->
+  <div class="modal-backdrop" id="editModalBackdrop">
+    <div class="edit-modal">
+      <div class="edit-modal-title" id="editModalTitle">NUEVO PRODUCTO</div>
+      <input type="hidden" id="editProductId" />
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre del producto *</label>
+          <input type="text" id="editName" placeholder="Ej: MANGO ICE" />
+        </div>
+        <div class="form-group">
+          <label>Categoría *</label>
+          <input type="text" id="editCategory" placeholder="Ej: Frutal" list="categoryList" />
+          <datalist id="categoryList"></datalist>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción *</label>
+        <textarea id="editDesc" placeholder="Describe el sabor y características del producto..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Precio (USD) *</label>
+          <input type="number" id="editPrice" placeholder="12.99" step="0.01" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Stock (unidades) *</label>
+          <input type="number" id="editStock" placeholder="20" min="0" step="1" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Emoji decorativo</label>
+          <input type="text" id="editEmoji" placeholder="🥭" />
+        </div>
+        <div class="form-group">
+          <label>Ruta de imagen (opcional)</label>
+          <input type="text" id="editImage" placeholder="images/mango.jpg" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Badge</label>
+          <select id="editBadge">
+            <option value="">Sin badge</option>
+            <option value="new">Nuevo</option>
+            <option value="hot">Hot 🔥</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="editActive">
+            <option value="true">Activo (visible)</option>
+            <option value="false">Inactivo (oculto)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Características (una por línea, máx 4)</label>
+        <textarea id="editDetails" placeholder="5000 puffs&#10;5% Nicotina&#10;Sin carga&#10;Listo para usar" style="min-height:70px"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeEditModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveProduct()">Guardar Producto</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/products.js"></script>
+  <script>
+    // ─── CONTRASEÑA ADMIN ────────────────────────────────────
+    // Cambia esto por una contraseña segura
+    const ADMIN_PASSWORD = "admin123";
+
+    let localProducts = JSON.parse(localStorage.getItem("vz_admin_products") || "null");
+    let products = localProducts ? localProducts : JSON.parse(JSON.stringify(PRODUCTS));
+
+    function login() {
+      const pass = document.getElementById("loginPassword").value;
+      if (pass === ADMIN_PASSWORD) {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("adminPanel").style.display = "block";
+        renderStats();
+        renderTable();
+      } else {
+        document.getElementById("loginError").style.display = "block";
+      }
+    }
+
+    function logout() {
+      document.getElementById("loginScreen").style.display = "flex";
+      document.getElementById("adminPanel").style.display = "none";
+      document.getElementById("loginPassword").value = "";
+    }
+
+    // ─── STATS ───────────────────────────────────────────────
+    function renderStats() {
+      const total = products.length;
+      const active = products.filter(p => p.active).length;
+      const inStock = products.filter(p => p.active && p.stock > 0).length;
+      const noStock = products.filter(p => p.stock === 0).length;
+
+      document.getElementById("adminStats").innerHTML = `
+        <div class="stat-card"><div class="stat-card-num">${total}</div><div class="stat-card-label">Total Productos</div></div>
+        <div class="stat-card"><div class="stat-card-num">${active}</div><div class="stat-card-label">Activos</div></div>
+        <div class="stat-card"><div class="stat-card-num">${inStock}</div><div class="stat-card-label">En Stock</div></div>
+        <div class="stat-card"><div class="stat-card-num" style="color:var(--accent)">${noStock}</div><div class="stat-card-label">Sin Stock</div></div>
+      `;
+    }
+
+    // ─── TABLA ───────────────────────────────────────────────
+    function renderTable() {
+      const tbody = document.getElementById("productsTableBody");
+      tbody.innerHTML = "";
+
+      products.forEach(p => {
+        const tr = document.createElement("tr");
+
+        let statusBadge = "";
+        if (!p.active) statusBadge = `<span class="badge-inactive">Inactivo</span>`;
+        else if (p.stock === 0) statusBadge = `<span class="badge-nostock">Sin Stock</span>`;
+        else statusBadge = `<span class="badge-active">Activo</span>`;
+
+        tr.innerHTML = `
+          <td style="font-size:1.5rem">${p.emoji}</td>
+          <td><strong>${p.name}</strong></td>
+          <td>${p.category}</td>
+          <td>$${p.price.toFixed(2)}</td>
+          <td>${p.stock}</td>
+          <td>${statusBadge}</td>
+          <td>
+            <div class="table-actions">
+              <button class="icon-btn" onclick="openEditModal(${p.id})">✏️ Editar</button>
+              <button class="icon-btn danger" onclick="deleteProduct(${p.id})">🗑️</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Fill category datalist
+      const cats = [...new Set(products.map(p => p.category))];
+      document.getElementById("categoryList").innerHTML = cats.map(c => `<option value="${c}">`).join("");
+    }
+
+    // ─── MODAL ───────────────────────────────────────────────
+    function openAddModal() {
+      document.getElementById("editModalTitle").textContent = "NUEVO PRODUCTO";
+      document.getElementById("editProductId").value = "";
+      document.getElementById("editName").value = "";
+      document.getElementById("editCategory").value = "";
+      document.getElementById("editDesc").value = "";
+      document.getElementById("editPrice").value = "";
+      document.getElementById("editStock").value = "";
+      document.getElementById("editEmoji").value = "💨";
+      document.getElementById("editImage").value = "";
+      document.getElementById("editBadge").value = "";
+      document.getElementById("editActive").value = "true";
+      document.getElementById("editDetails").value = "5000 puffs\n5% Nicotina\nSin carga\nListo para usar";
+      document.getElementById("editModalBackdrop").classList.add("active");
+    }
+
+    function openEditModal(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+
+      document.getElementById("editModalTitle").textContent = "EDITAR PRODUCTO";
+      document.getElementById("editProductId").value = p.id;
+      document.getElementById("editName").value = p.name;
+      document.getElementById("editCategory").value = p.category;
+      document.getElementById("editDesc").value = p.desc;
+      document.getElementById("editPrice").value = p.price;
+      document.getElementById("editStock").value = p.stock;
+      document.getElementById("editEmoji").value = p.emoji;
+      document.getElementById("editImage").value = p.image || "";
+      document.getElementById("editBadge").value = p.badge || "";
+      document.getElementById("editActive").value = String(p.active);
+      document.getElementById("editDetails").value = (p.details || []).join("\n");
+      document.getElementById("editModalBackdrop").classList.add("active");
+    }
+
+    function closeEditModal() {
+      document.getElementById("editModalBackdrop").classList.remove("active");
+    }
+
+    function saveProduct() {
+      const id = document.getElementById("editProductId").value;
+      const name = document.getElementById("editName").value.trim();
+      const category = document.getElementById("editCategory").value.trim();
+      const desc = document.getElementById("editDesc").value.trim();
+      const price = parseFloat(document.getElementById("editPrice").value);
+      const stock = parseInt(document.getElementById("editStock").value);
+      const emoji = document.getElementById("editEmoji").value.trim() || "💨";
+      const image = document.getElementById("editImage").value.trim();
+      const badge = document.getElementById("editBadge").value;
+      const active = document.getElementById("editActive").value === "true";
+      const details = document.getElementById("editDetails").value
+        .split("\n").map(d => d.trim()).filter(Boolean).slice(0, 4);
+
+      if (!name || !category || !desc || isNaN(price) || isNaN(stock)) {
+        alert("Por favor completa todos los campos obligatorios (*) correctamente.");
+        return;
+      }
+
+      if (id) {
+        // Editar
+        const idx = products.findIndex(p => p.id === parseInt(id));
+        if (idx !== -1) {
+          products[idx] = { ...products[idx], name, category, desc, price, stock, emoji, image, badge, active, details };
+        }
+      } else {
+        // Nuevo
+        const newId = Math.max(0, ...products.map(p => p.id)) + 1;
+        products.push({ id: newId, name, category, desc, price, stock, emoji, image, badge, active, details });
+      }
+
+      localStorage.setItem("vz_admin_products", JSON.stringify(products));
+      closeEditModal();
+      renderStats();
+      renderTable();
+    }
+
+    function deleteProduct(id) {
+      if (!confirm("¿Eliminar este producto?")) return;
+      products = products.filter(p => p.id !== id);
+      localStorage.setItem("vz_admin_products", JSON.stringify(products));
+      renderStats();
+      renderTable();
+    }
+  </script>
+</body>
+</html>

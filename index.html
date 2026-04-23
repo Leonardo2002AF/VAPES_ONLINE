@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VapeZone — Vapes Desechables Premium</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- CURSOR PERSONALIZADO -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- PARTÍCULAS DE FONDO -->
+  <div class="particles" id="particles"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">💨</span>
+      <span class="logo-text">VAPE<span class="logo-accent">ZONE</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#inicio">Inicio</a>
+      <a href="#productos">Productos</a>
+      <a href="#nosotros">Nosotros</a>
+    </div>
+    <div class="nav-cart" onclick="toggleCart()">
+      <span class="cart-icon">🛒</span>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-content">
+      <div class="hero-tag">✦ Nuevo Stock Disponible</div>
+      <h1 class="hero-title">
+        LA EXPERIENCIA<br/>
+        <span class="glitch" data-text="DEFINITIVA">DEFINITIVA</span><br/>
+        EN VAPEO
+      </h1>
+      <p class="hero-subtitle">Vapes desechables premium · Sabores únicos · Entrega directa</p>
+      <div class="hero-buttons">
+        <a href="#productos" class="btn-primary">Ver Productos</a>
+        <a href="#nosotros" class="btn-secondary">Saber más</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="vapor-ring ring1"></div>
+      <div class="vapor-ring ring2"></div>
+      <div class="vapor-ring ring3"></div>
+      <div class="hero-vape-emoji">💨</div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- BANNER ESTADÍSTICAS -->
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-num">+50</span>
+      <span class="stat-label">Sabores</span>
+    </div>
+    <div class="stat-divider">✦</div>
+    <div class="stat">
+      <span class="stat-num">+500</span>
+      <span class="stat-label">Clientes felices</span>
+    </div>
+    <div class="stat-divider">✦</div>
+    <div class="stat">
+      <span class="stat-num">100%</span>
+      <span class="stat-label">Originales</span>
+    </div>
+    <div class="stat-divider">✦</div>
+    <div class="stat">
+      <span class="stat-num">24h</span>
+      <span class="stat-label">Entrega rápida</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTOS -->
+  <section class="products-section" id="productos">
+    <div class="section-header">
+      <span class="section-tag">CATÁLOGO</span>
+      <h2 class="section-title">NUESTROS VAPES</h2>
+      <p class="section-sub">Elige tu sabor favorito y contáctanos directo por WhatsApp</p>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+    </div>
+
+    <!-- GRID DE PRODUCTOS -->
+    <div class="products-grid" id="productsGrid">
+      <!-- Los productos se cargan desde products.js -->
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section class="about-section" id="nosotros">
+    <div class="about-content">
+      <span class="section-tag">SOBRE NOSOTROS</span>
+      <h2 class="section-title">SOMOS<br/><span class="accent">VAPEZONE</span></h2>
+      <p>Somos tu tienda de confianza para vapes desechables de alta calidad. Ofrecemos los mejores productos del mercado con garantía de originalidad, precios competitivos y atención personalizada.</p>
+      <ul class="about-list">
+        <li>✦ Productos 100% originales y certificados</li>
+        <li>✦ Amplia variedad de sabores y marcas</li>
+        <li>✦ Pedidos por WhatsApp — rápido y seguro</li>
+        <li>✦ Entrega a domicilio disponible</li>
+      </ul>
+      <a href="#productos" class="btn-primary">Ver Productos</a>
+    </div>
+    <div class="about-visual">
+      <div class="about-card">
+        <span class="about-emoji">🌿</span>
+        <h3>Sabores Naturales</h3>
+        <p>Frutas, menta, mango y más</p>
+      </div>
+      <div class="about-card">
+        <span class="about-emoji">⚡</span>
+        <h3>Alta Duración</h3>
+        <p>Miles de puffs garantizados</p>
+      </div>
+      <div class="about-card">
+        <span class="about-emoji">🚀</span>
+        <h3>Entrega Express</h3>
+        <p>Mismo día disponible</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARRITO LATERAL -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>🛒 Tu Pedido</h3>
+      <button class="cart-close" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <span>💨</span>
+        <p>Tu carrito está vacío</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">$0</span>
+      </div>
+      <button class="btn-whatsapp" onclick="sendToWhatsApp()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.524 5.847L0 24l6.345-1.508A11.935 11.935 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.653-.502-5.183-1.381L3 22l1.424-4.679A9.955 9.955 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+        </svg>
+        Pedir por WhatsApp
+      </button>
+      <p class="cart-note">Te contactaremos para coordinar el pago y la entrega</p>
+    </div>
+  </div>
+
+  <!-- MODAL DE PRODUCTO -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+  <div class="product-modal" id="productModal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <span class="logo-icon">💨</span>
+        <span class="logo-text">VAPE<span class="logo-accent">ZONE</span></span>
+      </div>
+      <p class="footer-tagline">La experiencia definitiva en vapeo</p>
+      <div class="footer-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#productos">Productos</a>
+        <a href="#nosotros">Nosotros</a>
+      </div>
+      <p class="footer-disclaimer">⚠️ Producto para mayores de 18 años. Venta exclusiva para adultos.</p>
+    </div>
+  </footer>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
